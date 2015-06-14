@@ -1,4 +1,4 @@
-## Package closer ensures a clean exit for your Go app. 
+## Closer [![Circle CI](https://circleci.com/gh/xlab/closer/tree/master.svg?style=svg)](https://circleci.com/gh/xlab/closer/tree/master) [![GoDoc](https://godoc.org/github.com/xlab/closer?status.svg)](https://godoc.org/github.com/xlab/closer)
 
 The aim of this package is to provide an universal way to catch the event of application’s exit and perform some actions before it’s too late. `closer` doesn’t care about the way application tries to exit, i.e. was that a panic or just a signal from the OS, it calls the provided methods for cleanup and that’s the whole point.
 
