@@ -1,7 +1,7 @@
 // Package closer ensures a clean exit for your Go app.
 //
 // The aim of this package is to provide an universal way to catch the event of application’s exit
-// and perform some actions before it’s too late. `closer` doesn’t care about the way application
+// and perform some actions before it’s too late. Closer doesn’t care about the way application
 // tries to exit, i.e. was that a panic or just a signal from the OS, it calls the provided methods
 // for cleanup and that’s the whole point.
 //
@@ -27,22 +27,28 @@ import (
 )
 
 var (
+	// DebugSignalSet is a predefined list of signals to watch for. Usually
+	// these signals will terminate the app without executing the code in defer blocks.
 	DebugSignalSet = []os.Signal{
 		syscall.SIGINT,
 		syscall.SIGHUP,
 		syscall.SIGTERM,
 	}
-	// The default signal set will have syscall.SIGABRT that should be
+	// DefaultSignalSet will have syscall.SIGABRT that should be
 	// opted out if user wants to debug the stacktrace.
 	DefaultSignalSet = append(DebugSignalSet, syscall.SIGABRT)
 )
 
 var (
-	ExitCodeOK  = 0
+	// ExitCodeOK is a successfull exit code.
+	ExitCodeOK = 0
+	// ExitCodeErr is a failure exit code.
 	ExitCodeErr = 1
+	// ExitSignals is the active list of signals to watch for.
 	ExitSignals = DefaultSignalSet
 )
 
+// Config should be used with Init function to override the defaults.
 type Config struct {
 	ExitCodeOK  int
 	ExitCodeErr int
