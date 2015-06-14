@@ -6,13 +6,15 @@
 // for cleanup and that’s the whole point.
 //
 // Exit codes
+//
 // All errors and panics will be logged if the logging option of `closer.Checked` was set true,
 // also the exit code (for `os.Exit`) will be determined accordingly:
-// Event         | Default exit code
-// ------------- | -------------
-// error = nil   | 0 (success)
-// error != nil  | 1 (failure)
-// panic         | 1 (failure)
+//
+//   Event         | Default exit code
+//   ------------- | -------------
+//   error = nil   | 0 (success)
+//   error != nil  | 1 (failure)
+//   panic         | 1 (failure)
 //
 package closer
 
