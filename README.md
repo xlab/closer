@@ -2,6 +2,8 @@
 
 The aim of this package is to provide an universal way to catch the event of application’s exit and perform some actions before it’s too late. `closer` doesn’t care about the way application tries to exit, i.e. was that a panic or just a signal from the OS, it calls the provided methods for cleanup and that’s the whole point.
 
+![demo](https://habrastorage.org/getpro/habr/post_images/f2c/025/0cb/f2c0250cbc4e8519d706b5a35374d40d.png)
+
 ### Usage
 
 Be careful, this package is using the singleton pattern (like `net/http` does) and doesn't require any initialisation step. However, there’s an option to provide a custom configuration struct.
