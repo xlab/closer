@@ -41,3 +41,7 @@ Event         | Default exit code
 error = nil   | 0 (success)
 error != nil  | 1 (failure)
 panic         | 1 (failure)
+
+### License
+
+[MIT](/LICENSE)
