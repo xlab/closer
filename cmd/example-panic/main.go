@@ -19,13 +19,13 @@ func main() {
 
 func run() error {
 	fmt.Println("Will panic in 10 seconds...")
-	<-time.Tick(10 * time.Second)
+	time.Sleep(10 * time.Second)
 	panic("KAWABANGA!")
 	return nil
 }
 
 func cleanup() {
 	fmt.Print("Hang on! I'm closing some DBs, wiping some trails...")
-	<-time.Tick(3 * time.Second)
+	time.Sleep(3 * time.Second)
 	fmt.Println("  Done.")
 }
