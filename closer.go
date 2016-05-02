@@ -19,6 +19,7 @@
 package closer
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -133,6 +134,14 @@ func Close() {
 		// normal close
 		close(c.closeChan)
 	}
+	<-c.doneChan
+}
+
+// Fatalln works the same as log.Fatalln but respects the closer's logic.
+func Fatalln(v ...interface{}) {
+	out := log.New(os.Stderr, "", log.Flags())
+	out.Output(2, fmt.Sprintln(v...))
+	close(c.errChan)
 	<-c.doneChan
 }
 
