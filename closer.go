@@ -145,6 +145,14 @@ func Fatalln(v ...interface{}) {
 	<-c.doneChan
 }
 
+// Fatalf works the same as log.Fatalf but respects the closer's logic.
+func Fatalf(format string, v ...interface{}) {
+	out := log.New(os.Stderr, "", log.Flags())
+	out.Output(2, fmt.Sprintf(format, v...))
+	close(c.errChan)
+	<-c.doneChan
+}
+
 func (c *closer) closeErr() {
 	close(c.errChan)
 	<-c.doneChan
