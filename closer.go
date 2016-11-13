@@ -23,6 +23,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"runtime"
 	"sync"
 	"syscall"
 )
@@ -127,13 +128,30 @@ func (c *closer) wait() {
 func Close() {
 	// check if there was a panic
 	if x := recover(); x != nil {
+		var (
+			offset int = 3
+			pc     uintptr
+			ok     bool
+		)
 		log.Printf("run time panic: %v", x)
+		for offset < 32 {
+			pc, _, _, ok = runtime.Caller(offset)
+			if !ok {
+				// close with an error
+				close(c.errChan)
+				<-c.doneChan
+				return
+			}
+			frame := newStackFrame(pc)
+			fmt.Print(frame.String())
+			offset++
+		}
 		// close with an error
 		close(c.errChan)
-	} else {
-		// normal close
-		close(c.closeChan)
+		<-c.doneChan
 	}
+	// normal close
+	close(c.closeChan)
 	<-c.doneChan
 }
 
