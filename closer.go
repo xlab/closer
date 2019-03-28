@@ -148,6 +148,7 @@ func Close() {
 		}
 		// close with an error
 		c.closeErr()
+		return
 	}
 	// normal close
 	c.closeOnce.Do(func() {
@@ -173,6 +174,29 @@ func Fatalf(format string, v ...interface{}) {
 // Exit is the same as os.Exit but respects the closer's logic. It converts
 // any error code into ExitCodeErr (= 1, by default).
 func Exit(code int) {
+	// check if there was a panic
+	if x := recover(); x != nil {
+		var (
+			offset int = 3
+			pc     uintptr
+			ok     bool
+		)
+		log.Printf("run time panic: %v", x)
+		for offset < 32 {
+			pc, _, _, ok = runtime.Caller(offset)
+			if !ok {
+				// close with an error
+				c.closeErr()
+				return
+			}
+			frame := newStackFrame(pc)
+			fmt.Print(frame.String())
+			offset++
+		}
+		// close with an error
+		c.closeErr()
+		return
+	}
 	if code == ExitCodeOK {
 		c.closeOnce.Do(func() {
 			close(c.closeChan)
