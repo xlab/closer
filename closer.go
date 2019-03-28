@@ -170,6 +170,19 @@ func Fatalf(format string, v ...interface{}) {
 	c.closeErr()
 }
 
+// Exit is the same as os.Exit but respects the closer's logic. It converts
+// any error code into ExitCodeErr (= 1, by default).
+func Exit(code int) {
+	if code == ExitCodeOK {
+		c.closeOnce.Do(func() {
+			close(c.closeChan)
+		})
+		<-c.doneChan
+		return
+	}
+	c.closeErr()
+}
+
 func (c *closer) closeErr() {
 	c.closeOnce.Do(func() {
 		close(c.errChan)
