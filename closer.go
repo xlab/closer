@@ -223,6 +223,7 @@ func Init(cfg Config) {
 	c.codeErr = cfg.ExitCodeErr
 	c.signals = cfg.ExitSignals
 	signal.Notify(c.signalChan, c.signals...)
+	c.cancelWaitChan = make(chan struct{})
 	go c.wait()
 	c.sem.Unlock()
 }
